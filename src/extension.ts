@@ -1,26 +1,65 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode"
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    let disposable = vscode.commands.registerCommand(
+        "close-folder.closefiles",
+        async (uri: vscode.Uri) => {
+            const cfg = vscode.workspace.getConfiguration("closefiles")
+            const closeAllTabGroup = cfg.get("closeAllTabGroup")
+            const closeDeeply = cfg.get("closeDeeply")
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "close-folder" is now active!');
+            // The code you place here will be executed every time your command is executed
+            // Display a message box to the user
+            let dirname = ""
+            const state = await vscode.workspace.fs.stat(uri)
+            switch (state.type) {
+                case vscode.FileType.File:
+                    const parent = vscode.Uri.joinPath(uri, "..")
+                    dirname = parent.path
+                    break
+                case vscode.FileType.Directory:
+                    dirname = uri.path
+                    break
+            }
+            let sourceGroup: vscode.Tab[] = []
+            if (closeAllTabGroup) {
+                sourceGroup = vscode.window.tabGroups.all.flatMap((group) => {
+                    return group.tabs
+                })
+            } else {
+                sourceGroup = vscode.window.tabGroups.activeTabGroup
+                    .tabs as vscode.Tab[]
+            }
+            const docList: vscode.Tab[] = sourceGroup
+                .filter((v) => {
+                    const uri = v.input
+                    return (
+                        uri !== undefined &&
+                        v.input instanceof vscode.TabInputText
+                    )
+                })
+                .filter((v) => {
+                    const uri = (v.input as vscode.TabInputText).uri
+                    const tabPath = vscode.Uri.joinPath(uri, "..").path
+                    return closeDeeply
+                        ? tabPath.includes(dirname)
+                        : tabPath === dirname
+                })
+            vscode.window.tabGroups.close(docList)
+        }
+    )
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('close-folder.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Close Folder!');
-	});
-
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable)
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate(context: vscode.ExtensionContext) {
+    context.subscriptions.forEach((sub) => {
+        sub.dispose()
+    })
+}
+function shouldMatchTab(tabPath: string) {}

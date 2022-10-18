@@ -1,45 +1,93 @@
 {
-  "name": "close-folder",
-  "displayName": "Close Folder",
-  "description": "close all opened files with specified folder",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.72.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:close-folder.helloWorld"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "close-folder.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.72.0",
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.0",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.38.1",
-    "@typescript-eslint/parser": "^5.38.1",
-    "eslint": "^8.24.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.8.4",
-    "@vscode/test-electron": "^2.1.5"
-  }
+    "name": "close-folder",
+    "displayName": "Close Folder",
+    "description": "close all opened files with specified folder",
+    "version": "1.0.0",
+    "publisher": "YoRolling",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YoRolling/vscode-closefiles"
+    },
+    "author": {
+        "name": "YoRolling",
+        "email": "walldr2161ly@gmail.com",
+        "url": "https://github.com/YoRolling"
+    },
+    "icon": "assets/icon.png",
+    "engines": {
+        "vscode": "^1.72.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:close-folder.closefiles"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "close-folder.closefiles",
+                    "group": "2_workspace"
+                }
+            ],
+            "editor/title/context": [
+                {
+                    "command": "close-folder.closefiles",
+                    "group": "3_open"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "close-folder.closefiles",
+                    "group": "9_cutcopypaste"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "close-folder.closefiles",
+                "title": "Close Siblings/Children"
+            }
+        ],
+        "configuration": [
+            {
+                "title": "Close Siblings/Children",
+                "properties": {
+                    "closefiles.closeDeeply": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Whether to close files in subfolders"
+                    },
+                    "closefiles.closeAllTabGroup": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Close All TabGroup or ActiveTabGroup"
+                    }
+                }
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.72.0",
+        "@types/glob": "^8.0.0",
+        "@types/mocha": "^10.0.0",
+        "@types/node": "16.x",
+        "@typescript-eslint/eslint-plugin": "^5.38.1",
+        "@typescript-eslint/parser": "^5.38.1",
+        "eslint": "^8.24.0",
+        "glob": "^8.0.3",
+        "mocha": "^10.0.0",
+        "typescript": "^4.8.4",
+        "@vscode/test-electron": "^2.1.5"
+    }
 }
