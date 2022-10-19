@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
                 sourceGroup = vscode.window.tabGroups.activeTabGroup
                     .tabs as vscode.Tab[]
             }
-            const docList: vscode.Tab[] = sourceGroup
+            const guardPromiseList = sourceGroup
                 .filter((v) => {
                     const uri = v.input
                     return (
@@ -42,14 +42,31 @@ export function activate(context: vscode.ExtensionContext) {
                         v.input instanceof vscode.TabInputText
                     )
                 })
-                .filter((v) => {
+                .map(async (v) => {
                     const uri = (v.input as vscode.TabInputText).uri
                     const tabPath = vscode.Uri.joinPath(uri, "..").path
-                    return closeDeeply
-                        ? tabPath.includes(dirname)
-                        : tabPath === dirname
+                    if (closeDeeply) {
+                        const isSub = await isSubDir(dirname, tabPath)
+                        if (isSub) {
+                            return v
+                        } else {
+                            return undefined
+                        }
+                    } else {
+                        return Promise.resolve(
+                            tabPath === dirname ? v : undefined
+                        )
+                    }
                 })
-            vscode.window.tabGroups.close(docList)
+            try {
+                const docList = await Promise.all(guardPromiseList)
+                const availableDocList: vscode.Tab[] = docList.filter(
+                    (v: vscode.Tab | undefined): v is vscode.Tab => {
+                        return v !== undefined
+                    }
+                )
+                vscode.window.tabGroups.close(availableDocList)
+            } catch (error) {}
         }
     )
 
@@ -62,4 +79,21 @@ export function deactivate(context: vscode.ExtensionContext) {
         sub.dispose()
     })
 }
-function shouldMatchTab(tabPath: string) {}
+async function isSubDir(parent: string, subpath: string): Promise<boolean> {
+    if (
+        parent === null ||
+        parent === undefined ||
+        subpath === null ||
+        subpath === undefined
+    ) {
+        return false
+    }
+
+    if (subpath.includes(parent)) {
+        const [directItem] = subpath.replace(parent, "")?.split("/")
+        const uri = vscode.Uri.parse(`${parent}/${directItem}`)
+        const state = await vscode.workspace.fs.stat(uri)
+        return state.type === vscode.FileType.Directory
+    }
+    return false
+}

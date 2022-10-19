@@ -37,3 +37,7 @@ This extension contributes the following settings:
 ### 1.0.0
 
 Initial release of `Close Folder`
+
+### 1.1.0
+
+fixed similar path issue
