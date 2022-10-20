@@ -1,8 +1,8 @@
 {
-    "name": "close-folder",
-    "displayName": "Close Folder",
-    "description": "close all opened files with specified folder",
-    "version": "1.1.0",
+    "name": "tab-sprinkle",
+    "displayName": "Tab Sprinkle",
+    "description": "close all opened files in a directory and all its subdirectories",
+    "version": "2.0.0",
     "publisher": "YoRolling",
     "repository": {
         "type": "git",
@@ -21,45 +21,58 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:close-folder.closefiles"
+        "*"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "menus": {
             "explorer/context": [
                 {
-                    "command": "close-folder.closefiles",
+                    "command": "tab-sprinkle.sprinkletabs",
+                    "group": "2_workspace"
+                },
+                {
+                    "command": "tab-sprinkle.sprinkletabsdeeply",
                     "group": "2_workspace"
                 }
             ],
             "editor/title/context": [
                 {
-                    "command": "close-folder.closefiles",
+                    "command": "tab-sprinkle.sprinkletabs",
+                    "group": "3_open"
+                },
+                {
+                    "command": "tab-sprinkle.sprinkletabsdeeply",
                     "group": "3_open"
                 }
             ],
             "editor/context": [
                 {
-                    "command": "close-folder.closefiles",
+                    "command": "tab-sprinkle.sprinkletabs",
+                    "group": "9_cutcopypaste"
+                },
+                {
+                    "command": "tab-sprinkle.sprinkletabsdeeply",
                     "group": "9_cutcopypaste"
                 }
             ]
         },
         "commands": [
             {
-                "command": "close-folder.closefiles",
-                "title": "Close Siblings/Children"
+                "command": "tab-sprinkle.sprinkletabs",
+                "title": "Sprinkle Tabs",
+                "category": "Tabs"
+            },
+            {
+                "command": "tab-sprinkle.sprinkletabsdeeply",
+                "title": "Sprinkle Tabs Deeply",
+                "category": "Tabs"
             }
         ],
         "configuration": [
             {
-                "title": "Close Siblings/Children",
+                "title": "Sprinkle Tabs",
                 "properties": {
-                    "closefiles.closeDeeply": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "Whether to close files in subfolders"
-                    },
                     "closefiles.closeAllTabGroup": {
                         "type": "boolean",
                         "default": false,
