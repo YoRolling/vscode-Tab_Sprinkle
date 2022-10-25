@@ -14,6 +14,11 @@ Close same directory/subdirectory files with one click.
 
 ## Features
 
+
+
+
+![how_to_use](assets/howto.gif)
+
 -   Close same directory/subdirectory files with one click.
 -   Work with Explorer Context Menu/ Editor Context Menu / Editor Title Menu
 -   Work With TabGroups

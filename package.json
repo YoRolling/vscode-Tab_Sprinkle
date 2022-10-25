@@ -2,7 +2,7 @@
     "name": "tab-sprinkle",
     "displayName": "Tab Sprinkle",
     "description": "close all opened files in a directory and all its subdirectories",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "publisher": "YoRolling",
     "repository": {
         "type": "git",
@@ -21,7 +21,8 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onCommand:tab-sprinkle.sprinkletabs",
+        "onCommand:tab-sprinkle.sprinkletabsdeeply"
     ],
     "main": "./out/extension.js",
     "contributes": {
