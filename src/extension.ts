@@ -63,11 +63,15 @@ async function isSubDir(parent: string, subpath: string): Promise<boolean> {
         return false
     }
 
-    if (subpath.includes(parent)) {
+    if (subpath.indexOf(parent) === 0) {
         const [directItem] = subpath.replace(parent, "")?.split("/")
         const uri = vscode.Uri.parse(`${parent}/${directItem}`)
-        const state = await vscode.workspace.fs.stat(uri)
-        return state.type === vscode.FileType.Directory
+        try {
+            const state = await vscode.workspace.fs.stat(uri)
+            return state.type === vscode.FileType.Directory
+        } catch (error) {
+            return false
+        }
     }
     return false
 }

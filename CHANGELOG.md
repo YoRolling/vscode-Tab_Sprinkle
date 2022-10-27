@@ -11,3 +11,17 @@ Initial release of `Close Folder`
 ### 1.1.0
 
 fixed similar path issue
+
+### 2.0.0
+
+-   rename to `Tab Sprinkle`
+-   refactoring
+
+### 2.1.0
+
+-   fix issue
+-   add howto.gif
+
+### 2.2.0
+
+-   fix issue

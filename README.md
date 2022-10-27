@@ -14,9 +14,6 @@ Close same directory/subdirectory files with one click.
 
 ## Features
 
-
-
-
 ![how_to_use](assets/howto.gif)
 
 -   Close same directory/subdirectory files with one click.
@@ -44,3 +41,12 @@ fixed similar path issue
 
 -   rename to `Tab Sprinkle`
 -   refactoring
+
+### 2.1.0
+
+-   fix issue
+-   add howto.gif
+
+### 2.2.0
+
+-   fix issue
